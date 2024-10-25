@@ -25,3 +25,27 @@ class StorageLocationException(ConfigurationException):
     """Raised when there are issues with storage locations"""
     pass
 
+
+# COMMAND ----------
+
+
+class SetupException(MedallionBaseException):
+    """Base class for setup related exceptions"""
+    pass
+
+class InitializationException(SetupException):
+    """Rasied when there are issues with the initialization of the environment"""
+    pass
+
+class DatabaseObjectCreationException(InitializationException):
+    """Raised when there are errors while creating database objects like tables/views"""
+    pass
+
+class SetupValidationException(SetupException):
+    """Raised when setup validation fails"""
+    pass
+
+class EnvCleanupException(SetupException):
+    """Raised issues with cleaning up the env"""
+    pass
+
