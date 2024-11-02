@@ -49,3 +49,11 @@ class EnvCleanupException(SetupException):
     """Raised issues with cleaning up the env"""
     pass
 
+
+# COMMAND ----------
+
+class ReaderException(MedallionBaseException):
+    pass
+
+class LandingZoneReaderException(ReaderException):
+    pass

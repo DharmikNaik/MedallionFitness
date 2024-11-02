@@ -6,7 +6,7 @@
 
 # COMMAND ----------
 
-# MAGIC %run ./../utils/exceptions
+# MAGIC %run ../utils/exceptions
 
 # COMMAND ----------
 
@@ -34,6 +34,7 @@ class StorageConfig:
     """
     landing_zone_path: str
     checkpoint_path: str
+    lookup_files_path: str
 
 @dataclass(frozen=True)
 class DatabaseConfig:
@@ -96,7 +97,8 @@ class Config:
             
             return StorageConfig(
                 landing_zone_path=landing_zone_path,
-                checkpoint_path=checkpoint_path
+                checkpoint_path=checkpoint_path,
+                lookup_files_path=f"{landing_zone_path}/raw/lookups"
             )
         except Exception as e:
             raise StorageLocationError(f"Failed to initialize storage configuration: {str(e)}")
