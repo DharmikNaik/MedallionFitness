@@ -294,7 +294,6 @@ class SetupManager:
         # Initialize table definitions
         self.table_definitions = TableDefinitions(self.config)
 
-    @measure_performance
     @log_execution
     def initialize(self) -> None:
         try:
@@ -307,7 +306,6 @@ class SetupManager:
             self.config.error(f'Failed to initialize the env: {str(e)}')
             raise
     
-    @measure_performance
     @log_execution
     def _create_database(self):
         spark.sql(f'CREATE DATABASE IF NOT EXISTS {self.config.database.catalog}.{self.config.database.schema}')
@@ -330,25 +328,21 @@ class SetupManager:
                 self.config.error(f'Failed to create {"view" if table.is_view else "table"} {table.name}: {str(e)}')
                 raise
 
-    @measure_performance
     @log_execution
     def _create_bronze_tables(self) -> None:
         bronze_layer_definitions = self.table_definitions.get_bronze_tables()
         self._create_tables(bronze_layer_definitions)
 
-    @measure_performance
     @log_execution
     def _create_silver_tables(self) -> None:
         silver_layer_definitions = self.table_definitions.get_silver_tables()
         self._create_tables(silver_layer_definitions)
 
-    @measure_performance
     @log_execution
     def _create_gold_tables(self) -> None:
         gold_layer_definitions = self.table_definitions.get_gold_tables()
         self._create_tables(gold_layer_definitions)
 
-    @measure_performance
     @log_execution
     def validate(self) -> None:
         try:
@@ -372,7 +366,6 @@ class SetupManager:
             config.error(f'Setup validation failed: {str(e)}')
             raise
             
-    @measure_performance
     @log_execution
     def cleanup(self) -> None:
         """Clean up all resources"""

@@ -33,54 +33,19 @@ def log_execution(func: F) -> F:
         
         timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         logger.info(f"Starting '{func.__name__}' at {timestamp}")
+        execution_start_time = time.time()
         
         try:
             result = func(*args, **kwargs)
-            
+            execution_duration_secs = time.time() - execution_start_time
             end_timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            logger.info(f"Completed '{func.__name__}' at {end_timestamp}")
+            logger.info(f"Completed '{func.__name__}' at {end_timestamp} in {execution_duration_secs:.2f} seconds")
             
             return result
             
         except Exception as e:
-            logger.error(f"Error in '{func.__name__}': {str(e)}")
+            execution_duration_secs = time.time() - execution_start_time
+            logger.error(f"Error in '{func.__name__}': {str(e)}, failed after executing for {execution_duration_secs:.2f} seconds")
             raise
             
     return cast(F, wrapper)
-
-# COMMAND ----------
-
-def measure_performance(func: F) -> F:
-    """
-    Measures and logs the execution time of a function.
-    
-    Args:
-        func: The function to be decorated
-        
-    Returns:
-        The wrapped function with timing measurement
-        
-    Example:
-        @measure_performance
-        def process_data():
-            # Some processing
-            pass
-    """
-    @functools.wraps(func)
-    def wrapper(*args: Any, **kwargs: Any) -> Any:
-
-        start_time = time.time()
-        try:
-            result = func(*args, **kwargs)
-            execution_time = time.time() - start_time
-            
-            logger.info(f"Function '{func.__name__}' executed in {execution_time:.2f} seconds")
-            
-            return result
-            
-        except Exception as e:
-            execution_time = time.time() - start_time
-            logger.error(f"Function '{func.__name__}' failed after {execution_time:.2f} seconds")
-            raise
-            
-    return wrapper
