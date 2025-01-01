@@ -121,7 +121,6 @@ class BronzeIngestion:
             )
         }
 
-    @measure_performance
     @log_execution
     def _read_stream(self, source: SourceConfig, transformer: SourceTransformer) -> DataFrame:
         """
